@@ -24,6 +24,8 @@ private slots:
 
     void on_createGButton_clicked();
 
+    void on_connectGButton_clicked();
+
 private:
     Ui::menuWindow *ui;
     settingsWindow *setWin;

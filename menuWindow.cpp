@@ -34,3 +34,9 @@ void menuWindow::on_createGButton_clicked()
     cGamWin->show();
     this->close();
 }
+
+void menuWindow::on_connectGButton_clicked()
+{
+    cGamWin->show();
+    this->close();
+}

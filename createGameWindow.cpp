@@ -1,5 +1,6 @@
 #include "createGameWindow.h"
 #include "ui_createGameWindow.h"
+#include "QTimer"
 
 createGameWindow::createGameWindow(QWidget *parent) :
     QWidget(parent),
@@ -17,12 +18,24 @@ createGameWindow::~createGameWindow()
 
 void createGameWindow::on_backWindowButton_clicked()
 {
-    this->close();
     emit firstwindow();
+    QEventLoop loop;
+    QTimer timer;
+    timer.setInterval(500); //5 sec
+    connect (&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    timer.start();
+    loop.exec();
+    this->close();
 }
 
 void createGameWindow::on_startGameButton_clicked()
 {
-    gameWin3P->show();
+    gameWin3P->showFullScreen();
+    QEventLoop loop;
+    QTimer timer;
+    timer.setInterval(500); //5 sec
+    connect (&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    timer.start();
+    loop.exec();
     this->close();
 }

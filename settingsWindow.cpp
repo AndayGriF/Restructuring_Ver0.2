@@ -1,5 +1,6 @@
 #include "settingsWindow.h"
 #include "ui_settingsWindow.h"
+#include "QTimer"
 
 settingsWindow::settingsWindow(QWidget *parent) :
     QWidget(parent),
@@ -16,6 +17,12 @@ settingsWindow::~settingsWindow()
 
 void settingsWindow::on_backMWindowButton_clicked()
 {
-    this->close();
     emit firstwindow();
+    QEventLoop loop;
+    QTimer timer;
+    timer.setInterval(500); //5 sec
+    connect (&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+    timer.start();
+    loop.exec();
+    this->close();
 }

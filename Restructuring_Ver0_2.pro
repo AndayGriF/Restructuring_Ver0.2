@@ -18,11 +18,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     gameWindow.cpp \
     main.cpp \
-    mainWindow.cpp
+    mainWindow.cpp \
+    mysocket.cpp \
+    mythread.cpp
 
 HEADERS += \
     gameWindow.h \
-    mainWindow.h
+    mainWindow.h \
+    mysocket.h \
+    mythread.h
 
 FORMS += \
     gameWindow.ui \

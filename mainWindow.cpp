@@ -7,6 +7,11 @@ QString PlayerName = "";
 int PlayerIndex = -1;
 int countConnectedPlayers = 0;
 
+int menuFormWidth = 521;
+int menuFormHeight = 421; //463
+int gameFormWidth;
+int gameFormHeight;
+
 mainWindow::mainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::mainWindow)
@@ -147,6 +152,10 @@ void mainWindow::clientReceiveSock(QString text)
     int count;
     switch(status)
     {
+    case 7: //Открытие слоя с игрой
+        this->ui->stackedWidget->setCurrentIndex(2);
+        break;
+
     case 8: //Обновление готовности игроков
         for (int i = 0; i < countConnectedPlayers; i++)
         {
@@ -262,9 +271,10 @@ void mainWindow::on_startGameButton_clicked()
     if (IsCreateGame())
     {
         //переход в игру
-
-        gameWin->show();
-        this->close();
+        message = "7:Start";
+        clientSocket.clientSendSock(message);
+        //gameWin->show();
+        //this->close();
     }
     else
     {

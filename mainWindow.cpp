@@ -124,6 +124,7 @@ void mainWindow::on_runGameButton_clicked()
         {
             setIsCreateGame(true);
             ui->startGameButton->setText("Начать перестройку");
+            ui->startGameButton->setEnabled(false);
             setIsConnect(true);
             clientSocket.setClientRunSock(true);
             clientThread.start();
@@ -152,7 +153,6 @@ void mainWindow::clientReceiveSock(QString text)
             if (nameClients[i] == message)
             {
                 setReadyClient(i);
-                qDebug() << "PLAYER: " << nameClients[i] << ";  STATUS: " << readyClients[i];
                 break;
             }
         }
@@ -181,6 +181,18 @@ void mainWindow::clientReceiveSock(QString text)
                 break;
             }
         }
+        if (PlayerName == nameClients[0] && countConnectedPlayers > 2) //Проверка для активации запуска игры
+        {
+            int summ = 0;
+            for (int i = 0; i < countConnectedPlayers; i++)
+            {
+                summ += readyClients[i];
+            }
+            if (summ == countConnectedPlayers + 1)
+                ui->startGameButton->setEnabled(true);
+            else
+                ui->startGameButton->setEnabled(false);
+        }
         break;
 
     case 9: //Обновление списка игроков добавлении игроков и смены имени
@@ -191,6 +203,7 @@ void mainWindow::clientReceiveSock(QString text)
         {
             if (message[i] == ':')
             {
+                qDebug() << "PLAYER: " << nameClients[count] << ";  STATUS: " << readyClients[count];
                 switch (readyClients[count])
                 {
                 case 2:
@@ -248,9 +261,8 @@ void mainWindow::on_startGameButton_clicked()
     QString message;
     if (IsCreateGame())
     {
-        //проверки на готовность игроков
-
         //переход в игру
+
         gameWin->show();
         this->close();
     }

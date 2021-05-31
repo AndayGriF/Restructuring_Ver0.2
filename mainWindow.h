@@ -5,6 +5,7 @@
 #include "gameWindow.h"
 
 #include <QThread>
+#include <QPixmap>
 #include "mythread.h"
 #include "mysocket.h"
 
@@ -62,6 +63,8 @@ private slots:
     void on_nicknameEditButton_clicked();
 
     void clientReceiveSock(QString text);
+
+    void on_regulationsButton_clicked();
 
 private:
     Ui::mainWindow *ui;

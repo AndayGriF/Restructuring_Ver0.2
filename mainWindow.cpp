@@ -8,17 +8,62 @@ int PlayerIndex = -1;
 int countConnectedPlayers = 0;
 
 int menuFormWidth = 521;
-int menuFormHeight = 421; //463
-int gameFormWidth;
-int gameFormHeight;
+int menuFormHeight = 441;
+int gameFormWidth = 1300;
+int gameFormHeight = 640;
 
 mainWindow::mainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::mainWindow)
 {
     ui->setupUi(this);
+
+    QPixmap main(":/img/restructuring.jpg");
+    ui->mainIMG->setAlignment(Qt::AlignCenter);
+    ui->mainIMG->setPixmap(main.scaled(ui->mainIMG->width(), ui->mainIMG->height()));
+
+    QPixmap background(":/img/empty50.png");
+    ui->background1->setPixmap(background.scaled(ui->background1->width(), ui->background1->height()));
+    ui->background2->setPixmap(background.scaled(ui->background2->width(), ui->background2->height()));
+
+    QPixmap shirt(":/img/cards/shirt.png");
+    ui->oponent1Card1->setPixmap(shirt.scaled(ui->oponent1Card1->width(), ui->oponent1Card1->height(), Qt::KeepAspectRatio));
+    ui->oponent1Card2->setPixmap(shirt.scaled(ui->oponent1Card2->width(), ui->oponent1Card2->height(), Qt::KeepAspectRatio));
+    ui->oponent2Card1->setPixmap(shirt.scaled(ui->oponent2Card1->width(), ui->oponent2Card1->height(), Qt::KeepAspectRatio));
+    ui->oponent2Card2->setPixmap(shirt.scaled(ui->oponent2Card2->width(), ui->oponent2Card2->height(), Qt::KeepAspectRatio));
+    ui->oponent3Card1->setPixmap(shirt.scaled(ui->oponent3Card1->width(), ui->oponent3Card1->height(), Qt::KeepAspectRatio));
+    ui->oponent3Card2->setPixmap(shirt.scaled(ui->oponent3Card2->width(), ui->oponent3Card2->height(), Qt::KeepAspectRatio));
+
+    QPixmap coins(":/img/coins.png");
+    ui->iconCoins->setPixmap(coins.scaled(ui->iconCoins->width(), ui->iconCoins->height(), Qt::KeepAspectRatio));
+    ui->iconCoinsOponent1->setPixmap(coins.scaled(ui->iconCoinsOponent1->width(), ui->iconCoinsOponent1->height(), Qt::KeepAspectRatio));
+    ui->iconCoinsOponent2->setPixmap(coins.scaled(ui->iconCoinsOponent2->width(), ui->iconCoinsOponent2->height(), Qt::KeepAspectRatio));
+    ui->iconCoinsOponent3->setPixmap(coins.scaled(ui->iconCoinsOponent3->width(), ui->iconCoinsOponent3->height(), Qt::KeepAspectRatio));
+
+    QPixmap card1(":/img/cards/businessman.png");
+    QPixmap card2(":/img/cards/killer.png");
+    //QPixmap card3(":/img/cards/news.png");
+    //QPixmap card4(":/img/cardsburokrat.png");
+    //QPixmap card5(":/img/cards/dissident.png");
+
+    ui->playerCard1->setPixmap(card1.scaled(ui->playerCard1->width(), ui->playerCard1->height(), Qt::KeepAspectRatio));
+    ui->playerCard2->setPixmap(card2.scaled(ui->playerCard2->width(), ui->playerCard2->height(), Qt::KeepAspectRatio));
+
+    ui->playerCard1BTN->setStyleSheet("QPushButton{border-style: solid;"
+                                              "border-width: 3px;"
+                                              "border-color: green;"
+                                              "border-radius: 6px}");
+    ui->playerCard2BTN->setStyleSheet("QPushButton{border-style: solid;"
+                                              "border-width: 3px;"
+                                              "border-color: blue;"
+                                              "border-radius: 6px}");
+
     gameWin = new gameWindow();
     connect(gameWin, &gameWindow::firstwindow, this, &mainWindow::show);
+
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setGeometry(0,0,menuFormWidth,menuFormHeight);
+    this->setGeometry(0,0,menuFormWidth,menuFormHeight);
 
     setIsConnect(false);
     setIsCreateGame(false);
@@ -154,6 +199,8 @@ void mainWindow::clientReceiveSock(QString text)
     {
     case 7: //Открытие слоя с игрой
         this->ui->stackedWidget->setCurrentIndex(2);
+        ui->stackedWidget->setGeometry(0,0,gameFormWidth,gameFormHeight);
+        this->setGeometry(0,0,gameFormWidth,gameFormHeight);
         break;
 
     case 8: //Обновление готовности игроков
@@ -236,17 +283,6 @@ void mainWindow::clientReceiveSock(QString text)
                     qDebug() << "ОБНОВЛЕНИЕ СПИСКА ИГРОКОВ ПРОШЛО НЕ ГЛАДКО (9)";
                     break;
                 }
-//                nameClients[count] = name;
-//                if (count == 0)
-//                {
-//                    readyClients[count] = 2;
-//                    ui->listPlayers->setTextColor("red");
-//                }
-//                else
-//                {
-//                    readyClients[count] = 0;
-//                    ui->listPlayers->setTextColor("blue");
-//                }
                 name = "";
                 ui->listPlayers->insertPlainText(nameClients[count] + '\n');
                 count++;
@@ -273,8 +309,6 @@ void mainWindow::on_startGameButton_clicked()
         //переход в игру
         message = "7:Start";
         clientSocket.clientSendSock(message);
-        //gameWin->show();
-        //this->close();
     }
     else
     {
@@ -313,4 +347,9 @@ void mainWindow::on_nicknameEditButton_clicked()
     clientSocket.clientSendSock(message);
     Sleep(10);
     //Необходимо добавить проверку на одинаковые имена
+}
+
+void mainWindow::on_regulationsButton_clicked()
+{
+    gameWin->show();
 }

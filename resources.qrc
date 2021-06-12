@@ -13,5 +13,7 @@
         <file>img/empty25.png</file>
         <file>img/empty50.png</file>
         <file>img/restructuring.jpg</file>
+        <file>img/empty.png</file>
+        <file>img/koloda.png</file>
     </qresource>
 </RCC>

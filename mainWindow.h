@@ -66,6 +66,12 @@ private slots:
 
     void on_regulationsButton_clicked();
 
+    void on_changeCompCardsBTN_clicked();
+
+    void on_changeDoneBTN_clicked();
+
+    void on_addBotBTN_clicked();
+
 private:
     Ui::mainWindow *ui;
     gameWindow *gameWin;

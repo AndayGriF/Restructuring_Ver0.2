@@ -12,11 +12,29 @@ int menuFormHeight = 441;
 int gameFormWidth = 1300;
 int gameFormHeight = 640;
 
+QString card1Text = "Предприниматель";
+QString card2Text = "Киллер";
+QString card3Text = "Телеведущий";
+QString card4Text = "Бюрократ";
+QString card5Text = "Диссидент";
+
 mainWindow::mainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::mainWindow)
 {
     ui->setupUi(this);
+
+    ui->addBotBTN->setVisible(false);
+    ui->changeCompCardsBTN->setVisible(false);
+    ui->changeDoneBTN->setVisible(false);
+    ui->startGameButton->setText("Не готов");
+
+    ui->nameOponent3->setVisible(false);
+    ui->statusOponent3->setVisible(false);
+    ui->iconCoinsOponent3->setVisible(false);
+    ui->countCoinsOponent3->setVisible(false);
+    ui->oponent3Card1->setVisible(false);
+    ui->oponent3Card2->setVisible(false);
 
     QPixmap main(":/img/restructuring.jpg");
     ui->mainIMG->setAlignment(Qt::AlignCenter);
@@ -26,6 +44,12 @@ mainWindow::mainWindow(QWidget *parent)
     ui->background1->setPixmap(background.scaled(ui->background1->width(), ui->background1->height()));
     ui->background2->setPixmap(background.scaled(ui->background2->width(), ui->background2->height()));
 
+    QPixmap backgroundGame(":/img/empty.png");
+    ui->background3->setPixmap(backgroundGame.scaled(ui->background3->width(), ui->background3->height()));
+
+    QPixmap kolodaImg(":/img/koloda.png");
+    ui->koloda->setPixmap(kolodaImg.scaled(ui->koloda->width(), ui->koloda->height(), Qt::KeepAspectRatio));
+
     QPixmap shirt(":/img/cards/shirt.png");
     ui->oponent1Card1->setPixmap(shirt.scaled(ui->oponent1Card1->width(), ui->oponent1Card1->height(), Qt::KeepAspectRatio));
     ui->oponent1Card2->setPixmap(shirt.scaled(ui->oponent1Card2->width(), ui->oponent1Card2->height(), Qt::KeepAspectRatio));
@@ -34,20 +58,20 @@ mainWindow::mainWindow(QWidget *parent)
     ui->oponent3Card1->setPixmap(shirt.scaled(ui->oponent3Card1->width(), ui->oponent3Card1->height(), Qt::KeepAspectRatio));
     ui->oponent3Card2->setPixmap(shirt.scaled(ui->oponent3Card2->width(), ui->oponent3Card2->height(), Qt::KeepAspectRatio));
 
+    QPixmap card1Img(":/img/cards/businessman.png");
+    QPixmap card2Img(":/img/cards/killer.png");
+    QPixmap card3Img(":/img/cards/news.png");
+    QPixmap card4Img(":/img/cards/burokrat.png");
+    QPixmap card5Img(":/img/cards/dissident.png");
+
     QPixmap coins(":/img/coins.png");
     ui->iconCoins->setPixmap(coins.scaled(ui->iconCoins->width(), ui->iconCoins->height(), Qt::KeepAspectRatio));
     ui->iconCoinsOponent1->setPixmap(coins.scaled(ui->iconCoinsOponent1->width(), ui->iconCoinsOponent1->height(), Qt::KeepAspectRatio));
     ui->iconCoinsOponent2->setPixmap(coins.scaled(ui->iconCoinsOponent2->width(), ui->iconCoinsOponent2->height(), Qt::KeepAspectRatio));
     ui->iconCoinsOponent3->setPixmap(coins.scaled(ui->iconCoinsOponent3->width(), ui->iconCoinsOponent3->height(), Qt::KeepAspectRatio));
 
-    QPixmap card1(":/img/cards/businessman.png");
-    QPixmap card2(":/img/cards/killer.png");
-    //QPixmap card3(":/img/cards/news.png");
-    //QPixmap card4(":/img/cardsburokrat.png");
-    //QPixmap card5(":/img/cards/dissident.png");
-
-    ui->playerCard1->setPixmap(card1.scaled(ui->playerCard1->width(), ui->playerCard1->height(), Qt::KeepAspectRatio));
-    ui->playerCard2->setPixmap(card2.scaled(ui->playerCard2->width(), ui->playerCard2->height(), Qt::KeepAspectRatio));
+    ui->playerCard1->setPixmap(card1Img.scaled(ui->playerCard1->width(), ui->playerCard1->height(), Qt::KeepAspectRatio));
+    ui->playerCard2->setPixmap(card2Img.scaled(ui->playerCard2->width(), ui->playerCard2->height(), Qt::KeepAspectRatio));
 
     ui->playerCard1BTN->setStyleSheet("QPushButton{border-style: solid;"
                                               "border-width: 3px;"
@@ -61,9 +85,9 @@ mainWindow::mainWindow(QWidget *parent)
     gameWin = new gameWindow();
     connect(gameWin, &gameWindow::firstwindow, this, &mainWindow::show);
 
-    ui->stackedWidget->setCurrentIndex(0);
-    ui->stackedWidget->setGeometry(0,0,menuFormWidth,menuFormHeight);
-    this->setGeometry(0,0,menuFormWidth,menuFormHeight);
+    //ui->stackedWidget->setCurrentIndex(0);
+    //ui->stackedWidget->setGeometry(0,0,menuFormWidth,menuFormHeight);
+    //this->setGeometry(0,0,menuFormWidth,menuFormHeight);
 
     setIsConnect(false);
     setIsCreateGame(false);
@@ -251,7 +275,7 @@ void mainWindow::clientReceiveSock(QString text)
         }
         break;
 
-    case 9: //Обновление списка игроков добавлении игроков и смены имени
+    case 9: //Обновление списка игроков при добавлении игроков или смены имени
         name = "";
         count = 0;
         ui->listPlayers->setPlainText("");
@@ -352,4 +376,24 @@ void mainWindow::on_nicknameEditButton_clicked()
 void mainWindow::on_regulationsButton_clicked()
 {
     gameWin->show();
+}
+
+
+void mainWindow::on_changeCompCardsBTN_clicked()
+{
+    ui->listCards->setVisible(false);
+    ui->changeCompCardsBTN->setVisible(false);
+}
+
+void mainWindow::on_changeDoneBTN_clicked()
+{
+    //Вывод карт
+
+    ui->listCards->setVisible(true);
+    ui->changeCompCardsBTN->setVisible(true);
+}
+
+void mainWindow::on_addBotBTN_clicked()
+{
+
 }
